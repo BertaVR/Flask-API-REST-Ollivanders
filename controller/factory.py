@@ -1,5 +1,7 @@
 from flask import Flask
 from flask_restful import Resource, Api
+from controller.items import Items
+
 
 
 
@@ -13,6 +15,7 @@ def create_app():
             return {'Hello' : 'Ollivanders'}
 
     api.add_resource(WelcomeOllivanders, '/')
+    api.add_resource(Items, '/items/<name>')
 
 
     return app
