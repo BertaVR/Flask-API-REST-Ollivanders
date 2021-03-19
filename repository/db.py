@@ -1,6 +1,8 @@
 class DB():
     inventario = [["Conjured Mana Cake", 2, 4],["Aged Brie", 3, 4], ["Sulfuras", 2, 4], ["Backstage Passes", 2, 6]]
 
+    #objetos = [[AgedBrie("Aged Brie", 3, 4)]]
+
     @staticmethod
     def get_item(name):
         items = DB.inventario
