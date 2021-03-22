@@ -1,7 +1,9 @@
 from flask_restful import fields, abort, marshal_with
 from repository.db import DB
-class Service():
+import json
 
+
+class Service():
 
     # resource_fields = {
     #     'name': fields.String,
@@ -9,9 +11,8 @@ class Service():
     #     'quality': fields.Integer
     # }
 
-
     @staticmethod
-#@marshal_with(resource_fields)
+    # @marshal_with(resource_fields)
     def get_item(name):
 
         if not name:
@@ -22,4 +23,5 @@ class Service():
         if not items:
             abort(404, message="El item {} no existe".format(name))
 
-        return items
+        for item in items:
+            return {"name": item[0], "sell_in": str(item[1]), "quality": str(item[2])}
