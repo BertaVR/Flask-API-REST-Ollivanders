@@ -24,4 +24,4 @@ class Service():
             abort(404, message="El item {} no existe".format(name))
 
         for item in items:
-            return {"name": item[0], "sell_in": str(item[1]), "quality": str(item[2])}
+            return {"name": item[0], "sell_in": item[1], "quality": item[2]}
