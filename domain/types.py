@@ -1,6 +1,4 @@
-  
 class Inventory(object):
-
     def __init__(self, items):
         self.items = list(items)
 
@@ -21,14 +19,14 @@ class Item:
     @property
     def name(self):
         return self.__name
-    
+
     @property
     def sell_in(self):
         return self.__sell_in
 
     @property
     def quality(self):
-        return self.__quality 
+        return self.__quality
 
     @name.setter
     def name(self, value):
@@ -37,24 +35,24 @@ class Item:
     @sell_in.setter
     def sell_in(self, value):
         self.__sell_in = value
-    
+
     @quality.setter
     def quality(self, value):
         self.__quality = value
 
     def __eq__(self, other):
-        return self.name == other.name \
-               and self.sell_in == other.sell_in \
-               and self.quality == other.quality
+        return (
+            self.name == other.name
+            and self.sell_in == other.sell_in
+            and self.quality == other.quality
+        )
 
     def __repr__(self):
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
 
 
-
 class Updateable:
-
-    def update_quality(self): #es una interfaz
+    def update_quality(self):  # es una interfaz
         pass
 
 
@@ -71,7 +69,9 @@ class ConjuredItem(Item, Updateable):
         elif self.sell_in < 0:
             quality_increase = -4
         self.quality += quality_increase
-        if self.quality < 0:  # esto nos asegura que la calidad no sea negativa, lo cual no es posible######
+        if (
+            self.quality < 0
+        ):  # esto nos asegura que la calidad no sea negativa, lo cual no es posible######
             self.quality = 0
         return self.quality
 
@@ -93,7 +93,9 @@ class NormalItem(Item, Updateable):
             self.quality = self.quality + valor
         else:
             self.quality = 0
-        assert 0 <= self.quality <= 50, "quality de %s fuera de rango" % self.__class__.__name__
+        assert 0 <= self.quality <= 50, (
+            "quality de %s fuera de rango" % self.__class__.__name__
+        )
 
     def update_quality(self):
         if self.sell_in > 0:
@@ -146,7 +148,7 @@ class Backstage(NormalItem):
         elif self.sell_in > 0:
             quality_increase = 3
         elif self.sell_in == 0:
-            quality_increase = - self.quality
+            quality_increase = -self.quality
         self.quality += quality_increase
         if self.quality > 50:
             self.quality = 50

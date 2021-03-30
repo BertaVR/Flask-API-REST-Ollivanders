@@ -3,13 +3,13 @@ from repository.db import DB
 import json
 
 
-class Service():
+class Service:
 
     resource_fields = {
-         'name': fields.String,
-         'sell_in': fields.Integer,
-         'quality': fields.Integer
-     }
+        "name": fields.String,
+        "sell_in": fields.Integer,
+        "quality": fields.Integer,
+    }
 
     @staticmethod
     # @marshal_with(resource_fields)
@@ -26,17 +26,16 @@ class Service():
         for item in items:
             return {"name": item[0], "sell_in": item[1], "quality": item[2]}
 
-    @staticmethod    
+    @staticmethod
     @marshal_with(resource_fields)
     def get_objeto(name):
 
         if not name:
             abort(404, message="Es necesario el nombre del item")
-        
+
         item = DB.get_objeto(name)
-        
+
         if not item:
             abort(404, message="El item {} no existe".format(name))
 
         return item
-
