@@ -1,4 +1,4 @@
-from domain.types import AgedBrie, NormalItem
+from domain.types import *
 
 
 class DB:
@@ -6,10 +6,11 @@ class DB:
         ["Conjured Mana Cake", 2, 4],
         ["Aged Brie", 3, 4],
         ["Sulfuras", 2, 4],
-        ["Backstage Passes", 2, 6],
+        ["Backstage Passes", 2, 6]
     ]
 
-    objetos = [AgedBrie("Aged Brie", 3, 4)]
+    objetos = [AgedBrie("Aged Brie", 3, 4), Backstage("Backstage Passes", 2, 6), Sulfuras(
+        "Sulfuras", 2, 4), NormalItem("Conjured Mana Cake", 2, 4)]
 
     @staticmethod
     def get_item(name):
