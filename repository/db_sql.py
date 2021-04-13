@@ -17,35 +17,36 @@ class Item(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.name
-class DB:
-    
-    def add_objetos(self):
-        aged_brie = Item(object_type = "AgedBrie", name = "Aged Brie", quality = 4 , sell_in = 3)
-        backstage = Item(object_type = "Backstage", name = "Backstage passes to a TAFKAL80ETC concert", quality = 6, sell_in = 2)
-        sulfuras = Item(object_type = "Sulfuras", name = "Sulfuras, hand of Ragnaros", quality = 0, sell_in = 80)
-        conjured_mana_cake = Item(object_type = "NormalItem", name = "Conjured Mana Cake", quality = 2, sell_in = 4)
-        conjured_sulfuras = Item(object_type = "ConjuredItem", name = "Sulfuras", quality = 0, sell_in = 80)
 
-        db.session.add(aged_brie)
-        db.session.add(backstage)
-        db.session.add(sulfuras)
-        db.session.add(conjured_mana_cake)
-        db.session.add(conjured_sulfuras)
+    def __init__(self, object_type, name, quality, sell_in):
+        self.object_type = object_type
+        self.name = name
+        self.quality = quality
+        self.sell_in = sell_in
 
+class DB_sql:
+
+    inventario = [Item(object_type = "AgedBrie", name = "Aged Brie", quality = 4 , sell_in = 3),
+        Item(object_type = "Backstage", name = "Backstage passes to a TAFKAL80ETC concert", quality = 6, sell_in = 2),
+        Item(object_type = "Sulfuras", name = "Sulfuras, hand of Ragnaros", quality = 0, sell_in = 80),
+        Item(object_type = "NormalItem", name = "Conjured Mana Cake", quality = 2, sell_in = 4),
+        Item(object_type = "ConjuredItem", name = "Sulfuras", quality = 0, sell_in = 80)]
+
+    @staticmethod
+    def add_items(self):
+        inventario = DB_sql.inventario
+        for item in inventario:
+            db.session.add(item)         
+        db.session.commit()
+
+  
+
+    @staticmethod
+    def delete_item( name, quality, sell_in):
+        Item.query.filter_by( name = name, quality = quality, sell_in = sell_in).delete()
         db.session.commit()
 
 
-
-
-
-    @staticmethod
-    def get_item(name):
-        items = DB.inventario
-        print(items)
-        return [item for item in items if item[0] == name]
-
-    @classmethod
-    def get_objeto(cls, name):
-        items = cls.objetos
-        return [item for item in items if item.name == name][0]
+    
+    
 

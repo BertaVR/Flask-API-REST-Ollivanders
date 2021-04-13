@@ -4,7 +4,7 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from controller.items import Items
 from controller.objeto import Objeto
-from repository.db_sql import Item, db, DB
+from repository.db_sql import Item, db, DB_sql
 
 
 app = Flask(__name__)
@@ -16,11 +16,16 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 @app.route('/create')
 def crear_db():
-   base_datos = DB()
+   base_datos = DB_sql()
    db.drop_all()
    db.create_all()
    base_datos.add_objetos()
    return 'Los datos han sido introducidos.'
+
+@app.route('/delete/<name><quality><sell_in>')
+def delete(self):
+    DB_sql.delete_item()
+
 
 class WelcomeOllivanders(Resource):
     def get(self):
