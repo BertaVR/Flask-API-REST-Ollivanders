@@ -4,7 +4,7 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from controller.items import Items
 from controller.objeto import Objeto
-from repository.db_sql import Inventario, db
+from repository.db_sql import Item, db, DB
 
 
 app = Flask(__name__)
@@ -13,11 +13,14 @@ db.init_app(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:pomeranian@localhost/guildedrose"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+
 @app.route('/create')
 def crear_db():
+   base_datos = DB()
    db.drop_all()
    db.create_all()
-   return 'La tabla ha sido creada'
+   base_datos.add_objetos()
+   return 'Los datos han sido introducidos.'
 
 class WelcomeOllivanders(Resource):
     def get(self):
