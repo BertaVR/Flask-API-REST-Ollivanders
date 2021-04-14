@@ -1,11 +1,19 @@
-from flask import Flask
-from flask_restful import Resource, Api
+from flask import Flask, json, jsonify
+from flask_restful import Resource, Api, marshal_with, abort, fields
 import os
 from flask_sqlalchemy import SQLAlchemy
 from flask.cli import with_appcontext
 from flask import g
 
 db = SQLAlchemy()
+
+
+resource_fields = {
+            'object_type': fields.String,
+            'name': fields.String,
+            'quality': fields.Integer,
+            'sell_in': fields.Integer,
+    } 
 
 class Item(db.Model):
     __tablename__ = 'Inventario'
@@ -24,6 +32,10 @@ class Item(db.Model):
         self.quality = quality
         self.sell_in = sell_in
 
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+        sort_keys=True, indent=4)
+
 class DB_sql:
 
     inventario = [Item(object_type = "AgedBrie", name = "Aged Brie", quality = 4 , sell_in = 3),
@@ -32,12 +44,21 @@ class DB_sql:
         Item(object_type = "NormalItem", name = "Conjured Mana Cake", quality = 2, sell_in = 4),
         Item(object_type = "ConjuredItem", name = "Sulfuras", quality = 0, sell_in = 80)]
 
+    hola = Item(object_type = "Backstage", name = "Backstage passes to a TAFKAL80ETC concert", quality = 6, sell_in = 2)
+
     @staticmethod
     def add_items(self):
         inventario = DB_sql.inventario
         for item in inventario:
             db.session.add(item)         
         db.session.commit()
+
+    @staticmethod
+    def get_items():
+        items = Item.query.all()
+        for item in items:
+            return jsonify(item)
+
 
     # @staticmethod
     # def updateQuality():
@@ -50,16 +71,16 @@ class DB_sql:
     #         item.quality = item_object.quality
     #         item.save()
     #     return Item
-
     @staticmethod
     def get_item(itemName):
-        items = db.Item.objects(name=itemName)
+        items = Item.objects(name=itemName)
         if not items:
             abort(404, message="El item {} no existe".format(itemName))
-        return list(items)
+        return [item for item in items if item[0] == itemName]
 
 
-  
+
+
 
     @staticmethod
     def delete_item( name, quality, sell_in):

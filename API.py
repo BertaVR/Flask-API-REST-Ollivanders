@@ -1,4 +1,4 @@
-from flask import Flask, request, flash, redirect, url_for, g
+from flask import Flask, request, flash, redirect, url_for, jsonify
 from flask_restful import Resource, Api
 import os
 from flask_sqlalchemy import SQLAlchemy
@@ -25,11 +25,17 @@ def crear_db():
 # @app.route('/delete/')
 # def delete(self):
 #     DB_sql.delete_item()
-
+@app.route('/items')
+def show_items():
+    return DB_sql.get_items()
+    
 @app.route('/items/name/<itemName>')
-def get_item(itemName):
+def show_user(itemName):
     base_datos = DB_sql()
-    base_datos.get_item(itemName)
+    name = base_datos.query.filter_by(name=itemName).first_or_404()
+    return name.toJSON()
+
+
 
 
 class WelcomeOllivanders(Resource):
