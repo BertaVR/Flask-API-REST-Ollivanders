@@ -39,6 +39,26 @@ class DB_sql:
             db.session.add(item)         
         db.session.commit()
 
+    # @staticmethod
+    # def updateQuality():
+    #     db = g.db
+    #     for item in g.Item.objects():
+    #         item_object = Item(
+    #             [item.name, item.sell_in, item.quality])
+    #         item_object.update_quality()
+    #         item.sell_in = item_object.sell_in
+    #         item.quality = item_object.quality
+    #         item.save()
+    #     return Item
+
+    @staticmethod
+    def get_item(itemName):
+        items = db.Item.objects(name=itemName)
+        if not items:
+            abort(404, message="El item {} no existe".format(itemName))
+        return list(items)
+
+
   
 
     @staticmethod
@@ -49,4 +69,3 @@ class DB_sql:
 
     
     
-

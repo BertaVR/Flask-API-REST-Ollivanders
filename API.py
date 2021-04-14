@@ -22,9 +22,14 @@ def crear_db():
    base_datos.add_objetos()
    return 'Los datos han sido introducidos.'
 
-@app.route('/delete/<name><quality><sell_in>')
-def delete(self):
-    DB_sql.delete_item()
+# @app.route('/delete/')
+# def delete(self):
+#     DB_sql.delete_item()
+
+@app.route('/items/name/<itemName>')
+def get_item(itemName):
+    base_datos = DB_sql()
+    base_datos.get_item(itemName)
 
 
 class WelcomeOllivanders(Resource):
