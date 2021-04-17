@@ -60,7 +60,7 @@ class DB_sql:
     def get_items():
         items = Item.query.all()
         for item in items:
-            return jsonify(item)
+            return jsonify(name=item.name, quality=item.quality, sell_in=item.sell_in)
 
     # @staticmethod
     # def updateQuality():
