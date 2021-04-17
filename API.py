@@ -19,7 +19,7 @@ def crear_db():
    base_datos = DB_sql()
    db.drop_all()
    db.create_all()
-   base_datos.add_objetos()
+   base_datos.add_items()
    return 'Los datos han sido introducidos.'
 
 # @app.route('/delete/')
