@@ -6,7 +6,7 @@ class Inventory(object):
         for item in self.items:
             item.update_quality()
 
-    def getItems(self):
+    def get_items(self):
         return self.items
 
 

@@ -177,3 +177,6 @@ cover
 
 #Docs
 docs/_build
+setup.py
+tox.ini
+/pytest.ini
