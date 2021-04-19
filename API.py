@@ -22,15 +22,16 @@ def crear_db():
    base_datos.add_items()
    return 'Los datos han sido introducidos.'
 
-# @app.route('/delete/')
-# def delete(self):
-#     DB_sql.delete_item()
+# @app.route('/items/delete/<itemName>/')
+# def delete(itemName):
+#     DB_sql.delete_item(itemName)
+
 @app.route('/items')
 def show_items():
     return DB_sql.get_items()
     
 @app.route('/items/name/<itemName>')
-def show_user(itemName):
+def show_item(itemName):
     return DB_sql.get_item(itemName)
 
 
