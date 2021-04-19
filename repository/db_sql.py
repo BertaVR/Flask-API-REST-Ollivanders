@@ -9,7 +9,6 @@ db = SQLAlchemy()
 
 
 resource_fields = {
-    'object_type': fields.String,
     'name': fields.String,
     'quality': fields.Integer,
     'sell_in': fields.Integer,
@@ -58,9 +57,12 @@ class DB_sql:
 
     @staticmethod
     def get_items():
-        items = Item.query.all()
+        items = db.session.query(Item).all()
+        lista = []
         for item in items:
-            return jsonify(name=item.name, quality=item.quality, sell_in=item.sell_in)
+            entrada_dic = {'name': item.name, 'sell_in': item.sell_in, 'quality': item.quality}
+            lista.append(entrada_dic)
+        return {'items': lista}
 
     # @staticmethod
     # def updateQuality():
