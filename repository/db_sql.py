@@ -1,4 +1,4 @@
-from flask import Flask, json, jsonify
+from flask import Flask, json, jsonify, Response
 from flask_restful import Resource, Api, marshal_with, abort, fields
 import os
 from flask_sqlalchemy import SQLAlchemy
@@ -78,9 +78,11 @@ class DB_sql:
 
     @staticmethod
     def get_item(itemName):
+        if not itemName:
+            abort(404, description="Es necesario el nombre del item")
         item = Item.query.filter_by(name=itemName).first()
         if not item:
-            abort(404, message="El item {} no existe".format(itemName))
+            abort(404, description="El item {} no existe".format(itemName))
         return jsonify(name= item.name, quality=item.quality, sell_in=item.sell_in)
 
     @staticmethod
