@@ -43,7 +43,10 @@ class DB_sql:
                        quality=6, sell_in=2),
                   Item(name="Sulfuras, hand of Ragnaros", quality=0, sell_in=80),
                   Item(name="Conjured Mana Cake", quality=2, sell_in=4),
-                  Item(name="Sulfuras", quality=0, sell_in=80)]
+                  Item(name="Sulfuras", quality=0, sell_in=80),
+                  Item(name="Sulfuras", quality=0, sell_in=80), 
+                  Item(name="Conjured Mana Cake", quality=3, sell_in=5),
+                  Item(name="Aged Brie", quality=7, sell_in=-3)]
 
     hola = Item(name="Backstage passes to a TAFKAL80ETC concert",
                 quality=6, sell_in=2)
@@ -86,7 +89,12 @@ class DB_sql:
         return jsonify(name= item.name, quality=item.quality, sell_in=item.sell_in)
 
     @staticmethod
-    def delete_item(name, quality, sell_in):
-        Item.query.filter_by(name=name, quality=quality,
-                             sell_in=sell_in).delete()
+    def deleteAllthatMatchName(itemName):
+        if not itemName:
+            abort(404, description="Es necesario el nombre del item")
+        item = db.session.query(Item).filter_by(name=itemName).first()
+        if not item:
+            abort(404, description="El item {} no existe".format(itemName))
+        db.session.query(Item).filter_by(name=itemName).delete()
         db.session.commit()
+        return 'Objeto borrado'
