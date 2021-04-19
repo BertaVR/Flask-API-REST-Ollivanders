@@ -79,9 +79,9 @@ class DB_sql:
     @staticmethod
     def get_item(itemName):
         item = Item.query.filter_by(name=itemName).first()
-        if not items:
+        if not item:
             abort(404, message="El item {} no existe".format(itemName))
-        return item
+        return jsonify(name= item.name, quality=item.quality, sell_in=item.sell_in)
 
     @staticmethod
     def delete_item(name, quality, sell_in):

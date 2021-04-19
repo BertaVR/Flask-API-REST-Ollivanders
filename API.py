@@ -31,9 +31,7 @@ def show_items():
     
 @app.route('/items/name/<itemName>')
 def show_user(itemName):
-    base_datos = DB_sql()
-    name = base_datos.query.filter_by(name=itemName).first_or_404()
-    return name.toJSON()
+    return DB_sql.get_item(itemName)
 
 
 
