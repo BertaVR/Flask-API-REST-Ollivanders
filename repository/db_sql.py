@@ -58,11 +58,11 @@ class DB_sql:
     @staticmethod
     def get_items():
         items = db.session.query(Item).all()
-        lista = []
+        inventario = []
         for item in items:
-            entrada_dic = {'name': item.name, 'sell_in': item.sell_in, 'quality': item.quality}
-            lista.append(entrada_dic)
-        return {'items': lista}
+            item_json = {'name': item.name, 'sell_in': item.sell_in, 'quality': item.quality}
+            inventario.append(item_json)
+        return {'items': inventario}
 
     # @staticmethod
     # def updateQuality():
@@ -78,10 +78,10 @@ class DB_sql:
 
     @staticmethod
     def get_item(itemName):
-        items = Item.objects(name=itemName)
+        item = Item.query.filter_by(name=itemName).first()
         if not items:
             abort(404, message="El item {} no existe".format(itemName))
-        return [item for item in items if item[0] == itemName]
+        return item
 
     @staticmethod
     def delete_item(name, quality, sell_in):
