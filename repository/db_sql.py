@@ -39,16 +39,16 @@ class Item(db.Model):
 class DB_sql:
 
     inventario = [Item(name="Aged Brie", quality=4, sell_in=3),
-                  Item(name="Backstage passes to a TAFKAL80ETC concert",
+                  Item(name="Backstage",
                        quality=6, sell_in=2),
-                  Item(name="Sulfuras, hand of Ragnaros", quality=0, sell_in=80),
+                  Item(name="Sulfuras", quality=0, sell_in=80),
                   Item(name="Conjured Mana Cake", quality=2, sell_in=4),
                   Item(name="Sulfuras", quality=0, sell_in=80),
                   Item(name="Sulfuras", quality=0, sell_in=80), 
                   Item(name="Conjured Mana Cake", quality=3, sell_in=5),
                   Item(name="Aged Brie", quality=7, sell_in=-3)]
 
-    hola = Item(name="Backstage passes to a TAFKAL80ETC concert",
+    item_1= Item(name="Backstage",
                 quality=6, sell_in=2)
 
     @staticmethod
