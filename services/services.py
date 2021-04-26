@@ -1,6 +1,6 @@
 from repository.db_inicializar import get_DB
 from repository.db_models import Item
-from flask_restful import abort
+from flask_restful import abort, reqparse
 from flask.json import jsonify
 
 class Services():
@@ -47,3 +47,41 @@ class Services():
         db.session.query(Item).filter_by(name=itemName).delete()
         db.session.commit()
         return 'Objeto borrado'
+
+
+    @staticmethod
+    def postItem(args):
+        db = get_DB()
+        item = g.Item(name=args['name'])
+        item.sell_in = args['sell_in']
+        item.quality = args['quality']
+        db.session.add(item)
+        db.session.commit()
+        return "Objeto añadido uwu"
+
+
+    def post(self):
+        # curl -d name="Conjured Mana Cake" -d sell_in=3 -d quality=6
+        # http://127.0.0.1:5000/items -X POST
+        args_content = self.parseRequest()
+        Services.postItem(args_content)
+        return 'Éxito', 201
+
+    def delete(self):
+        # curl -d name="Conjured Mana Cake" -d sell_in=3 -d quality=6
+        # http://127.0.0.1:5000/items -X DELETE
+        args_content = self.parseRequest()
+        Services.deleteItem(args_content)
+        return 'Borrado', 204
+
+    def parseRequest(self):
+
+        parser = reqparse.RequestParser(bundle_errors=True)
+        parser.add_argument('name', type=str, required=True,
+                            help='name requerido')
+        parser.add_argument('sell_in', type=int, required=True,
+                            help='sellIn requerido')
+        parser.add_argument('quality', type=int, required=True,
+                            help='quality requerido')
+
+        return parser.parse_args()
