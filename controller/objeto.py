@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from services.service import Service
+from services.service_mock import Service
 
 
 class Objeto(Resource):
