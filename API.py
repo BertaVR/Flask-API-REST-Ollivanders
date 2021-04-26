@@ -4,35 +4,25 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from controller.items import Items
 from controller.objeto import Objeto
-from repository.db_sql import Item, db, DB_sql
-
+from repository import db_inicializar
+from services.services import Services
 
 app = Flask(__name__)
 api = Api(app)
-db.init_app(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:pomeranian@localhost/guildedrose"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db_inicializar.init_app(app)
 
-
-@app.route('/create')
-def crear_db():
-   base_datos = DB_sql()
-   db.drop_all()
-   db.create_all()
-   base_datos.add_items()
-   return 'Los datos han sido introducidos.'
 
 @app.route('/items/deleteAll/<itemName>/')
 def deleteAllthatMatchName(itemName):
-    return DB_sql.deleteAllthatMatchName(itemName)
+    return Services.deleteAllthatMatchName(itemName)
 
 @app.route('/items/')
 def show_items():
-    return DB_sql.get_items()
+    return Services.get_items()
     
-@app.route('/items/name/<itemName>')
-def show_user(itemName):
-    return DB_sql.get_item(itemName)
+@app.route('/item/<itemName>')
+def show_item(itemName):
+    return Services.get_item(itemName)
 
 
 

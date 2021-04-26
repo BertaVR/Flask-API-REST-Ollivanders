@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Resource, Api
-from services.service import Service
+from services.service_mock import Service
 import json
 
 
