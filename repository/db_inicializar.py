@@ -5,6 +5,7 @@ from flask.cli import with_appcontext
 from flask_sqlalchemy import SQLAlchemy
 from repository.db_conexion import db
 from repository.db_models import Item
+from repository.db_sql import DB_sql
 
 def get_DB():
     if db not in g:
