@@ -2,6 +2,7 @@ from repository.db_inicializar import get_DB
 from repository.db_models import Item
 from flask_restful import abort, reqparse
 from flask.json import jsonify
+from flask import g
 
 class Services():
     @staticmethod
@@ -10,7 +11,8 @@ class Services():
         items = db.session.query(Item).all()
         inventario = []
         for item in items:
-            item_json = {'name': item.name, 'sell_in': item.sell_in, 'quality': item.quality}
+            item_json = {'name': item.name,
+                         'sell_in': item.sell_in, 'quality': item.quality}
             inventario.append(item_json)
         return {'items': inventario}
 
@@ -34,37 +36,33 @@ class Services():
         item = Item.query.filter_by(name=itemName).first()
         if not item:
             abort(404, description="El item {} no existe".format(itemName))
-        return jsonify(name= item.name, quality=item.quality, sell_in=item.sell_in)
+        return jsonify(name=item.name, quality=item.quality, sell_in=item.sell_in)
 
     @staticmethod
-    def deleteAllthatMatchName(itemName):
+    def delete_item(itemName):
         db = get_DB()
         if not itemName:
             abort(404, description="Es necesario el nombre del item")
-        item = db.session.query(Item).filter_by(name=itemName).first()
+        item = db.session.query(Item).filter_by(name=itemName).first() ##id, vale vamos al ORM y le decimos que borre este item (en base al id)
         if not item:
             abort(404, description="El item {} no existe".format(itemName))
-        db.session.query(Item).filter_by(name=itemName).delete()
+        db.session.query(Item).filter_by(id=item.id).delete() ##mejor usar el ORM         
         db.session.commit()
         return 'Objeto borrado'
-
 
     @staticmethod
     def postItem(args):
         db = get_DB()
-        item = g.Item(name=args['name'])
-        item.sell_in = args['sell_in']
-        item.quality = args['quality']
+        item = g.Item(name = args['name'], sell_in = args['sell_in'], quality = args['quality'])
         db.session.add(item)
         db.session.commit()
-        return "Objeto añadido uwu"
-
-
+        
+    @staticmethod
     def post(self):
         # curl -d name="Conjured Mana Cake" -d sell_in=3 -d quality=6
         # http://127.0.0.1:5000/items -X POST
         args_content = self.parseRequest()
-        Services.postItem(args_content)
+        self.postItem(args_content)
         return 'Éxito', 201
 
     def delete(self):
@@ -75,13 +73,12 @@ class Services():
         return 'Borrado', 204
 
     def parseRequest(self):
-
         parser = reqparse.RequestParser(bundle_errors=True)
-        parser.add_argument('name', type=str, required=True,
+        parser.add_argument("name", type=str, required=True,
                             help='name requerido')
-        parser.add_argument('sell_in', type=int, required=True,
+        parser.add_argument("sell_in", type=int, required=True,
                             help='sellIn requerido')
-        parser.add_argument('quality', type=int, required=True,
+        parser.add_argument("quality", type=int, required=True,
                             help='quality requerido')
 
         return parser.parse_args()
